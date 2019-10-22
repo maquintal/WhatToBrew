@@ -15,8 +15,11 @@ Embed
 Simple sketch for using the DS18B20 temp sensor on an ESP8266 with Blynk
 Raw
  blynkDS18B20.ico */
-#include <SimpleTimer.h>           // Allows us to call functions without putting them in loop()
+//#include <SimpleTimer.h>           // Allows us to call functions without putting them in loop()
 
+//--------------------------------------
+// Import Blynk Libraries
+//--------------------------------------
 #define BLYNK_PRINT Serial         // Comment this out to disable prints and save space
 #include <BlynkSimpleEsp8266.h> 
 
@@ -26,14 +29,20 @@ Raw
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
+//--------------------------------------
+// Global Variables
+//--------------------------------------
 char auth[] = "71f5d84360634b6b9484753bb3ed4eab";
-char ssid[] = "BELL981";
-char pass[] = "";
-
-SimpleTimer timer;
-
+char ssid[] = "VIDEOTRON3218";
+char pass[] = "TU43CNTJCFETX";
 int roomTemperatureF;            // Room temperature in F
 int roomTemperatureC;            // Room temperature in C
+
+//--------------------------------------
+// 
+//--------------------------------------
+//SimpleTimer timer;
+BlynkTimer timer;
 
 void setup()
 {

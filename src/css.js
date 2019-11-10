@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
   },
 
   // STRUCTURE //
-  paper: {
+  /* paper: {
     marginTop: theme.spacing(1),
     //padding: theme.spacing(1),
     paddingBottom: theme.spacing(7),
@@ -17,19 +17,22 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(8),
     //textAlign: 'center',
     //color: theme.palette.text.secondary,
-  },
-  paperTitle: {
+  }, */
+  /* paperTitle: {
     marginLeft: theme.spacing(2),
-  },
+  }, */
 
   // FIELDS //
   textField: {
-    marginLeft: theme.spacing(5),
+    //marginLeft: theme.spacing(5),
   },
   select: {
     paddingTop: theme.spacing(2),
-    minWidth: "200px",
+    minWidth: theme.spacing(25),
   },
+  fieldArrayIcon: {
+    paddingTop: theme.spacing(3),
+  }
 }));
 
 export default useStyles;

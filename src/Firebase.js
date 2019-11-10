@@ -1,8 +1,6 @@
 import * as firebase from 'firebase';
 //import firestore from 'firebase/firestore'
 
-console.log(process.env.API_KEY)
-
 const settings = {timestampsInSnapshots: true};
 
 const config = {

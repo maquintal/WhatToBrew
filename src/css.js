@@ -24,15 +24,29 @@ const useStyles = makeStyles(theme => ({
 
   // FIELDS //
   textField: {
-    //marginLeft: theme.spacing(5),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
-  select: {
-    paddingTop: theme.spacing(2),
+  selectLabel: {
     minWidth: theme.spacing(25),
   },
+  select: {
+    minWidth: theme.spacing(25),
+    //marginLeft: theme.spacing(1),
+    //marginRight: theme.spacing(1),
+    //marginTop: theme.spacing(2),
+  },
   fieldArrayIcon: {
-    paddingTop: theme.spacing(3),
-  }
+    //paddingTop: theme.spacing(3),
+  },
+  fieldArrayHeader: {
+    marginBottom: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
 }));
 
 export default useStyles;

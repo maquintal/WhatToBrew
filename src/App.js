@@ -10,11 +10,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.refRecipes = firebase.firestore().collection('recipes');
-    this.refMalts = firebase.firestore().collection('malts');
+    this.refIngredients = firebase.firestore().collection('ingredients');
     this.unsubscribe = null;
     this.state = {
       recipes: [],
       malts: [],
+      hops: [],
     };
   }
 
@@ -36,21 +37,18 @@ class App extends Component {
   }
 
   onCollectionUpdateMalts = (querySnapshot) => {
-    const malts = [];
     querySnapshot.forEach((doc) => {
-      const { malt_name } = doc.data();
-      malts.push({
-        malt_name
+      const { malts, hops } = doc.data();
+      this.setState({
+        malts: malts,
+        hops: hops
       });
-    });
-    this.setState({
-      malts
-   });
-  }
+    })
+  };
 
   componentDidMount() {
     this.unsubscribe = this.refRecipes.onSnapshot(this.onCollectionUpdateRecipes);
-    this.unsubscribe = this.refMalts.onSnapshot(this.onCollectionUpdateMalts);
+    this.unsubscribe = this.refIngredients.onSnapshot(this.onCollectionUpdateMalts);
   }
 
   render() {

@@ -56,6 +56,7 @@ const Create = (props) => {
         waters: [{
           step: '',
           quantity: '',
+          temperature: '',
           duration: '',
         }],
         hops: [{
@@ -427,98 +428,44 @@ const Create = (props) => {
               <Grid item xs={6}>
                 <Grid container className={classes.container}>
                   <Grid item xs={12}>
-                    <FieldArray
-                      name="waters"
-                      render={({ insert, remove, push }) => (
-                        <div>
-                          {form.values.waters.length > 0 &&
-                            form.values.waters.map((water, index) => (
-                              <Grid container key={index}>
-                                <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>
-                                  <Fab
-                                    size="small"
-                                    onClick={() => remove(index)}
-                                  >
-                                    <DeleteIcon />
-                                  </Fab>
-                                </Grid>
-                                <Grid item xs={3}>
-                                  <Field
-                                    name={`waters.${index}.step`}
-                                    render={({ field }) => (
-                                      <FormControl className={classes.formControl}>
-                                        <InputLabel 
-                                          htmlFor="Step"
-                                          className={classes.selectLabel}
-                                          align="Left"
-                                        >
-                                          Step
-                                        </InputLabel>
-                                        <Select
-                                          {...field}
-                                          className={classes.select}
-                                          fullWidth                       
-                                        >
-                                          {/* hops.map((hop) => {
-                                            return (
-                                              <MenuItem value={hop}>{hop}</MenuItem>
-                                            );
-                                          }) */}
-                                          <MenuItem value={"step"}>{"step"}</MenuItem>
-                                        </Select>
-                                      </FormControl>
-                                    )}
-                                  />
-                                </Grid>
-                                <Grid item xs={3}>
-                                  <Field
-                                    name={`waters.${index}.quantity`}
-                                    render={({ field }) => (
-                                      <TextField
-                                        {...field}
-                                        label="Quantity"
-                                        placeholder="28"
-                                        //class="form-control"
-                                        className={classes.textField}
-                                        onChange={form.handleChange}
-                                        margin="dense"
-                                        variant="outlined"
-                                      />
-                                    )}
-                                  />
-                                </Grid>
-                                <Grid item xs={3}>
-                                  <Field
-                                    name={`waters.${index}.duration`}
-                                    render={({ field }) => (
-                                      <TextField
-                                        {...field}
-                                        label="Duration"
-                                        placeholder="60 min"
-                                        //class="form-control"
-                                        className={classes.textField}
-                                        onChange={form.handleChange}
-                                        margin="dense"
-                                        variant="outlined"
-                                      />
-                                    )}
-                                  />
-                                </Grid>
-                                <Grid item xs={1}></Grid>
-                                <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "-2%"}}>
-                                  <Fab
-                                    size="small"
-                                    onClick={() => push({ name: "", quantity: "" })}
-                                  >
-                                    <Add />
-                                  </Fab>
-                                </Grid>
-                              </Grid>
-                            )
-                          )}
-                        </div>
+                    <Field
+                      name={`waters.[0].step`}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Step"
+                          placeholder="Step"
+                          //class="form-control"
+                          className={classes.textField}
+                          onChange={form.handleChange}
+                          margin="dense"
+                          value="Mash In"
+                          fullWidth
+                          variant="outlined"
+                        />
                       )}
                     />
+                    {/* errors.email && touched.email && errors.email */}                
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field
+                      name={`waters.[1].step`}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Step"
+                          placeholder="Step"
+                          //class="form-control"
+                          className={classes.textField}
+                          onChange={form.handleChange}
+                          margin="dense"
+                          value="Sparge"
+                          fullWidth
+                          variant="outlined"
+                        />
+                      )}
+                    />
+                    {/* errors.email && touched.email && errors.email */}                
                   </Grid>
                 </Grid>
               </Grid>
@@ -532,17 +479,17 @@ const Create = (props) => {
                           {form.values.yeasts.length > 0 &&
                             form.values.yeasts.map((yeast, index) => (
                               <Grid container key={index}>
-                                <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>
+                                {/* <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>
                                   <Fab
                                     size="small"
                                     onClick={() => remove(index)}
                                   >
                                     <DeleteIcon />
                                   </Fab>
-                                </Grid>
-                                <Grid item xs={5}>
+                                </Grid> */}
+                                <Grid item xs={6}>
                                   <Field
-                                    name={`yeasts.${index}.name`}
+                                    name={`waters.${index}.name`}
                                     render={({ field }) => (
                                       <FormControl className={classes.formControl}>
                                         <InputLabel 

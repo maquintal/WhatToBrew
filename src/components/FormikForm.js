@@ -1,7 +1,7 @@
 // MODULES //
 import React from 'react';
 import { Formik, FieldArray, Field } from 'formik';
-import firebase from '../Firebase';
+//import firebase from '../Firebase';
 
 // MATERIAL //
 import TextField from '@material-ui/core/TextField';
@@ -24,39 +24,25 @@ import useStyles from '../css';
 //import SimpleSnackbar from "./snackbar";
 
 const getInitialValues = (props) => {
-  console.log(props)
+
   let initialValues = [];
 
-  if ( props.values !== undefined ) {
-    initialValues = props.values
-  } else {  
+  if ( props.values ) {
+    initialValues = props.values;
+  } else {
     initialValues = {
-      name: "jjj"
+      name: ""
     }
   }
 
   return initialValues;
 }
 
-const Show = (props) => {
-  console.log(props.match.params.id)
+const FormikForm = (props) => {
 
-  const { id } = props.match.params;
+  console.log(props)
+
   const classes = useStyles();
-
-  const [state, setState] = React.useState(getInitialValues(props));
-
-  React.useEffect(() => {
-    firebase.firestore().collection('recipes').doc(id).get().then((doc) => {
-      setState(getInitialValues(doc.data()));
-    })
-  }, [id]);
-
-  /* const [initialValues, setInitialValues] = React.useState(getInitialValues(props, props.fields)); 
-
-  React.useEffect(() => {
-    setInitialValues(getInitialValues(props, props.fields));
-  }, [props, props.fields]); */
 
   //delete(id) {
   //  firebase.firestore().collection('recipes').doc(id).delete().then(() => {
@@ -68,23 +54,21 @@ const Show = (props) => {
   //}
 
 //  render() {
-  console.log(state)
     return (<>
       <Formik
         enableReinitialize={true}
-        initialValues={state}
+        initialValues={getInitialValues(props)}
         onSubmit={(values, form ) => {
-          console.log({values: values})
-          const updateRef = firebase.firestore().collection('recipes').doc(id);
+          //const updateRef = firebase.firestore().collection('recipes').doc(id);
           
-          updateRef.set({values: values
-          }).then((docRef) => {
+          //updateRef.set({values: values
+          //}).then((docRef) => {
             
             //props.history.push("/show/"+id)
-          })
-          .catch((error) => {
-            console.error("Error adding document: ", error);
-          });
+          //})
+          //.catch((error) => {
+          //  console.error("Error adding document: ", error);
+          //});
 
           form.setSubmitting(false);
 
@@ -618,4 +602,4 @@ const Show = (props) => {
   //}
 }
 
-export default Show;
+export default FormikForm;

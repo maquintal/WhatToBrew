@@ -37,27 +37,13 @@ const Create = (props) => {
   //console.log(props)
   const classes = useStyles();
   //const { hops, malts } = props.location.params.state;
-  const { id } = props.match.params;
 
-  //const ref = firebase.firestore().collection('recipes');
-
-  const [state, setState] = React.useState({});
-  //const initialValues = React.useState({});
-
-  React.useEffect(() => {
-    if ( id ) {
-      firebase.firestore().collection('recipes').doc(id).get().then((doc) => {
-        setState(doc.data())
-      })
-    }    
-  }, [id, setState])
+  const ref = firebase.firestore().collection('recipes');
 
   return (
     <Formik
       {...props}
-      enableReinitialize={true}
-      initialValues={state.values}
-      /* initialValues={{
+      initialValues={{ 
         name: '',
         style: '',
         brewer: '',
@@ -88,7 +74,7 @@ const Create = (props) => {
         IBU: '',
         SRM: '',
         est_ABV: '',
-      }} */
+      }}
       /*validate={values => {
         let errors = {};
         if (!values.email) {
@@ -103,7 +89,7 @@ const Create = (props) => {
       onSubmit={(values, form) => {
 
         console.log(form)
-        /* ref.add({
+        ref.add({
           values
         }).then((docRef) => {
           props.history.push("/")
@@ -112,7 +98,7 @@ const Create = (props) => {
           console.error("Error adding document: ", error);
         });
 
-        form.setSubmitting(false); */
+        form.setSubmitting(false);
 
       }}    
     
@@ -270,8 +256,7 @@ const Create = (props) => {
                       name="malts"
                       render={({ insert, remove, push }) => (
                         <div>
-                          {//form.values.malts.length > 0 &&
-                            form.values.malts !== undefined &&
+                          {form.values.malts.length > 0 &&
                             form.values.malts.map((malt, index) => (
                               <Grid container key={index}>
                                 <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>
@@ -351,8 +336,7 @@ const Create = (props) => {
                       name="hops"
                       render={({ insert, remove, push }) => (
                         <div>
-                          {//form.values.hops.length > 0 &&
-                            form.values.hops !== undefined &&
+                          {form.values.hops.length > 0 &&
                             form.values.hops.map((hop, index) => (
                               <Grid container key={index}>
                                 <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>
@@ -600,8 +584,7 @@ const Create = (props) => {
                       name="yeasts"
                       render={({ insert, remove, push }) => (
                         <div>
-                          {//form.values.yeasts.length > 0 &&
-                            form.values.yeasts !== undefined &&
+                          {form.values.yeasts.length > 0 &&
                             form.values.yeasts.map((yeast, index) => (
                               <Grid container key={index}>
                                 <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>

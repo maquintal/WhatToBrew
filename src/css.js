@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     //marginTop: theme.spacing(2),
   },
   fieldArrayIcon: {
-    //paddingTop: theme.spacing(3),
+    paddingTop: theme.spacing(1),
   },
   fieldArrayHeader: {
     marginBottom: theme.spacing(2),

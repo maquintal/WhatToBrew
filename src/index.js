@@ -6,16 +6,20 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 //import Edit from './components/Edit';
-import Create from './components/Create';
+//import Create from './components/Create';
 import Show from './components/Show';
+import SimpleSnackbar from "./components/snackbar";
 
 ReactDOM.render(
   <Router>
       <div>
         <Route exact path='/' component={App} />
         {/* <Route path='/edit/:id' component={Edit} /> */}
-        <Route path='/create' component={Create} />
+        {/* <Route path='/create' component={Create} /> */}
+        {/* <Route path='/create/:id' component={Create} /> */}
+        {/* <Route path='/show' component={Show} /> */}
         <Route path='/show/:id' component={Show} />
+        <Route path='/snackbar' component={SimpleSnackbar} />
       </div>
   </Router>,
   document.getElementById('root')

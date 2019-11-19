@@ -4,7 +4,6 @@ import './App.css';
 import firebase from './Firebase';
 
 import Button from "@material-ui/core/Button";
-//import Create from "./components/Create";
 
 class App extends Component {
   constructor(props) {
@@ -50,7 +49,7 @@ class App extends Component {
     this.unsubscribe = this.refRecipes.onSnapshot(this.onCollectionUpdateRecipes);
     this.unsubscribe = this.refIngredients.onSnapshot(this.onCollectionUpdateMalts);
   }
-
+  
   render() {
     console.log(this.state)
     return (
@@ -66,9 +65,8 @@ class App extends Component {
             {/* <h4><Link to='/create' params={{state: this.state}}>Add Board</Link></h4> */}
             <Button
               onClick={() => this.props.history.push({
-                pathname: "/create",
+                pathname: "/show",
                 params: {state: this.state}
-                //state: {state: state}
               })}
             >
               CLick
@@ -84,6 +82,15 @@ class App extends Component {
               <tbody>
                 {this.state.recipes.map(board =>
                   <tr>
+                    <td>
+                      <Button
+                        onClick={() => this.props.history.push(`/show/${board.key}`)}
+                          /* pathname: `/show/${board.key}`,
+                          params: {state: this.state, id: board.key} */
+                      >
+                        {board.name}
+                      </Button>
+                    </td>
                     <td><Link to={`/show/${board.key}`}>{board.name}</Link></td>
                     <td>{board.description}</td>
                     <td>{board.brewer}</td>

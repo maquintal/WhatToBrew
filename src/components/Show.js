@@ -52,12 +52,6 @@ const Show = (props) => {
     })
   }, [id]);
 
-  /* const [initialValues, setInitialValues] = React.useState(getInitialValues(props, props.fields)); 
-
-  React.useEffect(() => {
-    setInitialValues(getInitialValues(props, props.fields));
-  }, [props, props.fields]); */
-
   //delete(id) {
   //  firebase.firestore().collection('recipes').doc(id).delete().then(() => {
   //    console.log("Document successfully deleted!");
@@ -67,8 +61,6 @@ const Show = (props) => {
   //  });
   //}
 
-//  render() {
-  console.log(state)
     return (<>
       <Formik
         enableReinitialize={true}
@@ -104,7 +96,7 @@ const Show = (props) => {
                         <Typography variant="h5">
                           General Beer Recipe Information
                         </Typography>            
-                        <Grid container align="center">
+                        <Grid container>
                           <Grid item xs={3}>
                             <Field
                               name="name"
@@ -309,11 +301,11 @@ const Show = (props) => {
                   <Grid item xs={6}>
                     <Grid container>
                       <Grid item xs={12}>
-                        {/*<FieldArray
+                        <FieldArray
                           name="hops"
                           render={({ insert, remove, push }) => (
                             <div>
-                              {form.values.hops.length > 0 &&
+                              {form.values.malts !== undefined &&
                                 form.values.hops.map((hop, index) => (
                                   <Grid container key={index}>
                                     <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>
@@ -345,7 +337,7 @@ const Show = (props) => {
                                                 return (
                                                   <MenuItem value={hop}>{hop}</MenuItem>
                                                 );
-                                              })
+                                              }) */}
                                               <MenuItem value={"hop"}>{"hop"}</MenuItem>
                                             </Select>
                                           </FormControl>
@@ -360,7 +352,6 @@ const Show = (props) => {
                                             {...field}
                                             label="Quantity"
                                             placeholder="28"
-                                            //class="form-control"
                                             className={classes.textField}
                                             onChange={form.handleChange}
                                             margin="dense"
@@ -382,7 +373,7 @@ const Show = (props) => {
                               )}
                             </div>
                           )}
-                        /> */}
+                        />
                       </Grid>
                     </Grid>
                   </Grid>
@@ -405,26 +396,6 @@ const Show = (props) => {
                   </Grid>
                   <Grid item xs={6}>
                     <Grid container className={classes.container}>
-                      <Grid item xs={12}>
-                        <Field
-                          name={`waters.[0].step`}
-                          render={({ field }) => (
-                            <TextField
-                              {...field}
-                              label="Step"
-                              placeholder="Step"
-                              //class="form-control"
-                              className={classes.textField}
-                              onChange={form.handleChange}
-                              margin="dense"
-                              value="Mash In"
-                              fullWidth
-                              variant="outlined"
-                            />
-                          )}
-                        />
-                        {/* errors.email && touched.email && errors.email */}                
-                      </Grid>
                       <Grid item xs={3}>
                         <Field
                           name={`waters.[0].step`}
@@ -433,7 +404,6 @@ const Show = (props) => {
                               {...field}
                               label="Step"
                               placeholder="Step"
-                              //class="form-control"
                               className={classes.textField}
                               onChange={form.handleChange}
                               margin="dense"
@@ -452,12 +422,10 @@ const Show = (props) => {
                             <TextField
                               {...field}
                               label="Quantity"
-                              placeholder="Step"
-                              //class="form-control"
+                              placeholder="15 L"
                               className={classes.textField}
                               onChange={form.handleChange}
                               margin="dense"
-                              value="Mash In"
                               fullWidth
                               variant="outlined"
                             />
@@ -467,17 +435,33 @@ const Show = (props) => {
                       </Grid>
                       <Grid item xs={3}>
                         <Field
-                          name={`waters.[0].step`}
+                          name={`waters.[0].temperature`}
                           render={({ field }) => (
                             <TextField
                               {...field}
-                              label="Step"
-                              placeholder="Step"
-                              //class="form-control"
+                              label="Temperature"
+                              placeholder="152 F"
                               className={classes.textField}
                               onChange={form.handleChange}
                               margin="dense"
-                              value="Mash In"
+                              fullWidth
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        {/* errors.email && touched.email && errors.email */}                
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Field
+                          name={`waters.[0].duration`}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Duration"
+                              placeholder="60 min"
+                              className={classes.textField}
+                              onChange={form.handleChange}
+                              margin="dense"
                               fullWidth
                               variant="outlined"
                             />
@@ -493,11 +477,64 @@ const Show = (props) => {
                               {...field}
                               label="Step"
                               placeholder="Step"
-                              //class="form-control"
                               className={classes.textField}
                               onChange={form.handleChange}
                               margin="dense"
                               value="Sparge"
+                              fullWidth
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        {/* errors.email && touched.email && errors.email */}                
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Field
+                          name={`waters.[1].quantity`}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Quantity"
+                              placeholder="18 L"
+                              className={classes.textField}
+                              onChange={form.handleChange}
+                              margin="dense"
+                              fullWidth
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        {/* errors.email && touched.email && errors.email */}                
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Field
+                          name={`waters.[1].temperature`}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Temperature"
+                              placeholder="152 F"
+                              className={classes.textField}
+                              onChange={form.handleChange}
+                              margin="dense"
+                              fullWidth
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        {/* errors.email && touched.email && errors.email */}                
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Field
+                          name={`waters.[1].duration`}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Duration"
+                              placeholder="10 min"
+                              className={classes.textField}
+                              onChange={form.handleChange}
+                              margin="dense"
                               fullWidth
                               variant="outlined"
                             />
@@ -510,15 +547,15 @@ const Show = (props) => {
                   <Grid item xs={6}>
                     <Grid container>
                       <Grid item xs={12}>
-                        {/* <FieldArray
+                        <FieldArray
                           name="yeasts"
                           render={({ insert, remove, push }) => (
                             <div>
 
-                              {form.values.yeasts.length > 0 &&
+                              {form.values.malts !== undefined &&
                                 form.values.yeasts.map((yeast, index) => (
                                   <Grid container key={index}>
-                                    {/* <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>
+                                    <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>
                                       <Fab
                                         size="small"
                                         onClick={() => remove(index)}
@@ -526,7 +563,7 @@ const Show = (props) => {
                                         <DeleteIcon />
                                       </Fab>
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={5}>
                                       <Field
                                         name={`yeasts.${index}.name`}
                                         render={({ field }) => (
@@ -547,7 +584,7 @@ const Show = (props) => {
                                                 return (
                                                   <MenuItem value={yeast}>{yeast}</MenuItem>
                                                 );
-                                              })
+                                              }) */}
                                               <MenuItem value={"yeast"}>{"yeast"}</MenuItem>
                                             </Select>
                                           </FormControl>
@@ -562,7 +599,6 @@ const Show = (props) => {
                                             {...field}
                                             label="Quantity"
                                             placeholder="28"
-                                            //class="form-control"
                                             className={classes.textField}
                                             onChange={form.handleChange}
                                             margin="dense"
@@ -584,7 +620,7 @@ const Show = (props) => {
                               )}
                             </div>
                           )}
-                        /> */}
+                        />
                       </Grid>
                     </Grid>
                   </Grid>

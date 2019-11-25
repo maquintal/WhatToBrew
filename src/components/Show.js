@@ -39,18 +39,27 @@ const getInitialValues = (props) => {
 }
 
 const Show = (props) => {
-  console.log(props.match.params.id)
 
-  const { id } = props.match.params;
+  console.log(props)
+
+  const [id] = React.useState(props.match.params ? props.match.params.id : null);
   const classes = useStyles();
+  //console.log(props)
+  const { /* hops, */ malts } = props.location.params.state;
+
+  console.log(malts)
 
   const [state, setState] = React.useState(getInitialValues(props));
+  const [ref] = React.useState(firebase.firestore().collection('recipes'))
+  const [updateRef] = React.useState(id ? firebase.firestore().collection('recipes').doc(id) : null)
 
   React.useEffect(() => {
-    firebase.firestore().collection('recipes').doc(id).get().then((doc) => {
-      setState(getInitialValues(doc.data()));
-    })
-  }, [id]);
+    if ( id !== undefined ) {
+      ref.doc(id).get().then((doc) => {
+        setState(getInitialValues(doc.data()));
+      })
+    }
+  }, [id, ref]);
 
   //delete(id) {
   //  firebase.firestore().collection('recipes').doc(id).delete().then(() => {
@@ -66,18 +75,29 @@ const Show = (props) => {
         enableReinitialize={true}
         initialValues={state}
         onSubmit={(values, form ) => {
-          console.log({values: values})
-          const updateRef = firebase.firestore().collection('recipes').doc(id);
+          //console.log({values: values})
+          if ( id ) {
           
-          updateRef.set({values: values
-          }).then((docRef) => {
+            updateRef.set({values: values
+            }).then((docRef) => {
+              console.log(`congrats ${values.id} has updated`);
+              props.history.push("/")
+            })
+            .catch((error) => {
+              console.error("Error adding document: ", error);
+            });
             
-            //props.history.push("/show/"+id)
-          })
-          .catch((error) => {
-            console.error("Error adding document: ", error);
-          });
-
+          } else {
+            ref.add({
+              values
+            }).then((docRef) => {
+              props.history.push("/")
+            })
+            .catch((error) => {
+              console.error("Error adding document: ", error);
+            });
+          }
+          
           form.setSubmitting(false);
 
         }} 
@@ -253,12 +273,12 @@ const Show = (props) => {
                                               className={classes.select}
                                               fullWidth                       
                                             >
-                                              {/* malts.map((malt) => {
+                                              {malts.map((malt) => {
                                                 return (
-                                                  <MenuItem value={malt}>{malt}</MenuItem>
-                                                ); */}
-                                              })
-                                              <MenuItem value={"malt"}>{"malt"}</MenuItem>
+                                                  <MenuItem value={malt.name}>{malt.name}</MenuItem>
+                                                );
+                                              })}
+                                              {/* <MenuItem value={"malt"}>{"malt"}</MenuItem> */}
                                             </Select>
                                           </FormControl>
                                         )}

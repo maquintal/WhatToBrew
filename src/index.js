@@ -5,10 +5,9 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-//import Edit from './components/Edit';
-//import Create from './components/Create';
 import Show from './components/Show';
 import SimpleSnackbar from "./components/snackbar";
+import TestGet from "./components/TestGet";
 
 ReactDOM.render(
   <Router>
@@ -17,9 +16,10 @@ ReactDOM.render(
         {/* <Route path='/edit/:id' component={Edit} /> */}
         {/* <Route path='/create' component={Create} /> */}
         {/* <Route path='/create/:id' component={Create} /> */}
-        {/* <Route path='/show' component={Show} /> */}
+        <Route path='/create' component={Show} />
         <Route path='/show/:id' component={Show} />
         <Route path='/snackbar' component={SimpleSnackbar} />
+        <Route path='/test' component={TestGet} />
       </div>
   </Router>,
   document.getElementById('root')

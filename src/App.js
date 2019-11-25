@@ -65,7 +65,7 @@ class App extends Component {
             {/* <h4><Link to='/create' params={{state: this.state}}>Add Board</Link></h4> */}
             <Button
               onClick={() => this.props.history.push({
-                pathname: "/show",
+                pathname: "/create",
                 params: {state: this.state}
               })}
             >
@@ -84,9 +84,14 @@ class App extends Component {
                   <tr>
                     <td>
                       <Button
-                        onClick={() => this.props.history.push(`/show/${board.key}`)}
-                          /* pathname: `/show/${board.key}`,
-                          params: {state: this.state, id: board.key} */
+                        onClick={() => this.props.history.push({
+                          pathname: `/show/${board.key}`,
+                          params: {state: this.state, id: board.key}
+                        }
+                        //  `/show/${board.key}`
+                        
+                          
+                        )}
                       >
                         {board.name}
                       </Button>

@@ -47,6 +47,28 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+
+  // Collapse //
+  collapseRoot: {
+    height: 100,
+  },
+  collapseWrapper: {
+    width: 200 + theme.spacing(2),
+  },
+  collapsePaper: {
+    zIndex: 1,
+    position: 'relative',
+    margin: theme.spacing(1),
+  },
+  collapseSvg: {
+    width: 200,
+    height: 200,
+  },
+  collapsePolygon: {
+    fill: theme.palette.common.white,
+    stroke: theme.palette.divider,
+    strokeWidth: 1,
+  },
 }));
 
 export default useStyles;

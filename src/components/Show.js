@@ -19,39 +19,92 @@ import Add from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
-// CUSTOM //
+import Switch from '@material-ui/core/Switch';
+import Slide from '@material-ui/core/Slide';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+// CSS //
 import useStyles from '../css';
 //import SimpleSnackbar from "./snackbar";
 
 const getInitialValues = (props) => {
-  console.log(props)
   let initialValues = [];
 
   if ( props.values !== undefined ) {
     initialValues = props.values
   } else {  
     initialValues = {
-      name: "jjj"
+      name: '',
+        style: '',
+        brewer: '',
+        version: '',
+        description: '',
+        malts: [{
+          name: '',
+          quantity: '',
+          subMalts: [],
+        }],
+        waters: [{
+          step: '',
+          quantity: '',
+          temperature: '',
+          duration: '',
+        }],
+        hops: [{
+          name: "",
+          quantity: ""
+        }],
+        yeasts: [{
+          name: '',
+          quantity: '',
+        }],
+        miscs: [{
+          name: '',
+          quantity: '',
+        }],
+        IBU: '',
+        SRM: '',
+        est_ABV: '',
     }
   }
 
   return initialValues;
 }
 
+// MAIN //
 const Show = (props) => {
 
-  console.log(props)
+  //console.log(props)
 
   const [id] = React.useState(props.match.params ? props.match.params.id : null);
   const classes = useStyles();
-  //console.log(props)
   const { /* hops, */ malts } = props.location.params.state;
-
-  console.log(malts)
 
   const [state, setState] = React.useState(getInitialValues(props));
   const [ref] = React.useState(firebase.firestore().collection('recipes'))
-  const [updateRef] = React.useState(id ? firebase.firestore().collection('recipes').doc(id) : null)
+  const [refIngredients] = React.useState(firebase.firestore().collection('ingredients').doc("7m5HiRkAt6OCJwt7EeoA"))
+  const [updateRef] = React.useState(id ? firebase.firestore().collection('recipes').doc(id) : null);
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChange = () => {
+    setChecked(prev => !prev);
+  };
+
+  const func = (props) => { 
+    refIngredients
+    .get().then((doc2) => {
+      doc2.data().malts.map((malt) => {
+        if ( malt.name ===  props.name ) {
+          props.subMalts = malt.sub
+        } else {
+          return ""
+        }
+        return (
+          ""
+        )
+      })
+    })
+  };
 
   React.useEffect(() => {
     if ( id !== undefined ) {
@@ -75,10 +128,9 @@ const Show = (props) => {
         enableReinitialize={true}
         initialValues={state}
         onSubmit={(values, form ) => {
-          //console.log({values: values})
           if ( id ) {
-          
-            updateRef.set({values: values
+            updateRef.set({
+              values: values
             }).then((docRef) => {
               console.log(`congrats ${values.id} has updated`);
               props.history.push("/")
@@ -86,7 +138,6 @@ const Show = (props) => {
             .catch((error) => {
               console.error("Error adding document: ", error);
             });
-            
           } else {
             ref.add({
               values
@@ -100,10 +151,9 @@ const Show = (props) => {
           
           form.setSubmitting(false);
 
-        }} 
+        }}
 
         render={form => (
-        
           <form onSubmit={form.handleSubmit}>
             <div /* className={classes.root} */>
               <br />
@@ -275,11 +325,16 @@ const Show = (props) => {
                                             >
                                               {malts.map((malt) => {
                                                 return (
-                                                  <MenuItem value={malt.name}>{malt.name}</MenuItem>
+                                                  <MenuItem 
+                                                    value={malt.name}
+                                                  >
+                                                    {malt.name}
+                                                  </MenuItem>
                                                 );
                                               })}
                                               {/* <MenuItem value={"malt"}>{"malt"}</MenuItem> */}
                                             </Select>
+                                            {func(form.values.malts[index])}
                                           </FormControl>
                                         )}
                                       />
@@ -304,11 +359,48 @@ const Show = (props) => {
                                     <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "-2%"}}>
                                       <Fab
                                         size="small"
-                                        onClick={() => push({ name: "", quantity: "" })}
+                                        onClick={() => push({ name: "", quantity: "", subMalts: [] })}
                                       >
                                         <Add />
                                       </Fab>
-                                    </Grid>
+                                    </Grid>                                                                        
+                                    {form.values.malts[index].name ?
+                                      <React.Fragment>
+                                        <Grid item xs={12}>
+                                          <FormControlLabel
+                                            control={<Switch checked={checked} onChange={handleChange} />}
+                                            label="Show"
+                                          />
+                                          <Slide direction="up" in={checked} mountOnEnter unmountOnExit>
+                                            <Paper elevation={4} className={classes.collapsePaper}>
+                                              { form.values.malts[index].subMalts }                                              
+                                            </Paper>
+                                          </Slide>
+                                        </Grid>
+
+                                        {/* <Grid item xs={12}>
+                                          <Field
+                                            name={`malts.${index}.subMalts`}
+                                            render={({ field }) => (
+                                              <TextField
+                                                {...field}
+                                                label="Description"
+                                                placeholder="Add Beer Recipe Description"
+                                                //class="form-control"
+                                                className={classes.textField}
+                                                onChange={form.handleChange}
+                                                margin="normal"
+                                                fullWidth
+                                                multiline
+                                                rows={4}
+                                                variant="outlined"
+                                                InputLabelProps={{ shrink: true }}
+                                              />
+                                            )}
+                                          />
+                                        </Grid> */}
+                                      </React.Fragment>
+                                    : null}
                                   </Grid>
                                 )
                               )}
@@ -572,7 +664,7 @@ const Show = (props) => {
                           render={({ insert, remove, push }) => (
                             <div>
 
-                              {form.values.malts !== undefined &&
+                              {form.values.yeasts !== undefined &&
                                 form.values.yeasts.map((yeast, index) => (
                                   <Grid container key={index}>
                                     <Grid item xs={1} className={classes.fieldArrayIcon} style={{marginLeft: "1%"}}>

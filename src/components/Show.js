@@ -19,9 +19,11 @@ import Add from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
-import Switch from '@material-ui/core/Switch';
-import Slide from '@material-ui/core/Slide';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+//import Switch from '@material-ui/core/Switch';
+//import Slide from '@material-ui/core/Slide';
+//import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+import SimpleModal from "./Modal";
 
 // CSS //
 import useStyles from '../css';
@@ -74,21 +76,26 @@ const getInitialValues = (props) => {
 // MAIN //
 const Show = (props) => {
 
-  //console.log(props)
+  console.log(props)
 
   const [id] = React.useState(props.match.params ? props.match.params.id : null);
   const classes = useStyles();
-  const { /* hops, */ malts } = props.location.params.state;
+  // const { /* hops, */ malts } = props.location.params.state;
 
   const [state, setState] = React.useState(getInitialValues(props));
   const [ref] = React.useState(firebase.firestore().collection('recipes'))
   const [refIngredients] = React.useState(firebase.firestore().collection('ingredients').doc("7m5HiRkAt6OCJwt7EeoA"))
   const [updateRef] = React.useState(id ? firebase.firestore().collection('recipes').doc(id) : null);
-  const [checked, setChecked] = React.useState(false);
+  //const [checked, setChecked] = React.useState(false);
+  /* const [ingredients, setIngredients] = React.useState({
+    malts: [],
+    hops: []
+  }) */
+  const [malts, setMalts] = React.useState([])
 
-  const handleChange = () => {
+  /* const handleChange = () => {
     setChecked(prev => !prev);
-  };
+  }; */
 
   const func = (props) => { 
     refIngredients
@@ -113,6 +120,13 @@ const Show = (props) => {
       })
     }
   }, [id, ref]);
+
+  React.useEffect(() => {
+    refIngredients
+    .get().then((doc2) => {
+      setMalts(doc2.data().malts)
+    })
+  }, [refIngredients])
 
   //delete(id) {
   //  firebase.firestore().collection('recipes').doc(id).delete().then(() => {
@@ -366,39 +380,21 @@ const Show = (props) => {
                                     </Grid>                                                                        
                                     {form.values.malts[index].name ?
                                       <React.Fragment>
-                                        <Grid item xs={12}>
+                                        <Grid item xs={12}>{/* 
                                           <FormControlLabel
                                             control={<Switch checked={checked} onChange={handleChange} />}
                                             label="Show"
                                           />
                                           <Slide direction="up" in={checked} mountOnEnter unmountOnExit>
                                             <Paper elevation={4} className={classes.collapsePaper}>
-                                              { form.values.malts[index].subMalts }                                              
+                                              { typeof(form.values.malts[index].subMalts) === "object" ?
+                                                form.values.malts[index].subMalts.map(item => {
+                                                  return item + ", "
+                                                }) 
+                                              : null}          
                                             </Paper>
-                                          </Slide>
+                                          </Slide> */}
                                         </Grid>
-
-                                        {/* <Grid item xs={12}>
-                                          <Field
-                                            name={`malts.${index}.subMalts`}
-                                            render={({ field }) => (
-                                              <TextField
-                                                {...field}
-                                                label="Description"
-                                                placeholder="Add Beer Recipe Description"
-                                                //class="form-control"
-                                                className={classes.textField}
-                                                onChange={form.handleChange}
-                                                margin="normal"
-                                                fullWidth
-                                                multiline
-                                                rows={4}
-                                                variant="outlined"
-                                                InputLabelProps={{ shrink: true }}
-                                              />
-                                            )}
-                                          />
-                                        </Grid> */}
                                       </React.Fragment>
                                     : null}
                                   </Grid>
@@ -408,6 +404,11 @@ const Show = (props) => {
                           )}
                         />
                       </Grid>
+                    </Grid>
+                    <Grid>
+                      <SimpleModal 
+                        {...form.values}
+                      />
                     </Grid>
                   </Grid>
                   <Grid item xs={6}>

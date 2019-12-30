@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import './App.css';
 import firebase from './Firebase';
 
-import Button from "@material-ui/core/Button";
+import MUIDataTable from "mui-datatables";
+
+import Button from "@material-ui/core/Button"
 
 class App extends Component {
   constructor(props) {
@@ -13,8 +13,8 @@ class App extends Component {
     this.unsubscribe = null;
     this.state = {
       recipes: [],
-      malts: [],
-      hops: [],
+      //malts: [],
+      //hops: [],
     };
   }
 
@@ -35,7 +35,7 @@ class App extends Component {
    });
   }
 
-  onCollectionUpdateMalts = (querySnapshot) => {
+  /* onCollectionUpdateMalts = (querySnapshot) => {
     querySnapshot.forEach((doc) => {
       const { malts, hops } = doc.data();
       this.setState({
@@ -43,71 +43,80 @@ class App extends Component {
         hops: hops
       });
     })
-  };
+  }; */
 
   componentDidMount() {
     this.unsubscribe = this.refRecipes.onSnapshot(this.onCollectionUpdateRecipes);
-    this.unsubscribe = this.refIngredients.onSnapshot(this.onCollectionUpdateMalts);
+    //this.unsubscribe = this.refIngredients.onSnapshot(this.onCollectionUpdateMalts);
   }
-  
+
   render() {
-    console.log(this.state)
-    return (
-      <div class="container">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">
-              BOARD LIST
-            </h3>
-          </div>
-          <div class="panel-body">
-            {console.log(this.state)}
-            {/* <h4><Link to='/create' params={{state: this.state}}>Add Board</Link></h4> */}
-            <Button
-              onClick={() => this.props.history.push({
-                pathname: "/create",
-                params: {state: this.state}
-              })}
-            >
-              CLick
-            </Button>
-            <table class="table table-stripe">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Brewer</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.recipes.map(board =>
-                  <tr>
-                    <td>
-                      <Button
-                        onClick={() => this.props.history.push({
-                          pathname: `/show/${board.key}`,
-                          params: {state: this.state, id: board.key}
-                        }
-                        //  `/show/${board.key}`
-                        
-                          
-                        )}
-                      >
-                        {board.name}
-                      </Button>
-                    </td>
-                    <td><Link to={`/show/${board.key}`}>{board.name}</Link></td>
-                    <td>{board.description}</td>
-                    <td>{board.brewer}</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    );
+
+    const columns = [
+      {
+        name: "key",
+        label: "Key",
+        options: {
+         filter: true,
+         sort: true,
+         display: false,
+        }
+       },
+      {
+       name: "name",
+       label: "Name",
+       options: {
+        filter: true,
+        sort: true,
+       }
+      },
+      {
+       name: "description",
+       label: "Description",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+       name: "brewer",
+       label: "Brewer",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+    ];
+
+    const options = {
+      onRowClick: (rowData, rowMeta) => {
+        //console.log("----RowClick");
+        //console.log("rowData: ", rowData);
+        //console.log("rowMeta: ", rowMeta);
+        this.props.history.push({
+          pathname: `/show/${rowData[0]}`
+        })
+      },
+      selectableRows: false
+    };
+   
+    return (<>
+      <Button
+        onClick={() => this.props.history.push({
+          pathname: "/create",
+          //params: {state: this.state}
+        })}
+      >
+        Add Recipe
+      </Button>
+      <MUIDataTable
+        title={"Brewing Recipes"}
+        data={this.state.recipes}
+        columns={columns}
+        options={options}
+      />
+    </>)
   }
 }
 
-export default App;
+  export default App;

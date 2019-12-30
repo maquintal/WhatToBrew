@@ -2,71 +2,72 @@
 import React from 'react';
 import firebase from '../Firebase';
 
+import MUIDataTable from "mui-datatables";
+
 const TestGet = () => {
-
-  //const [state, setState] = React.useState({});
-
-  //React.useEffect(() => {
-    /* const ref = firebase.firestore().collectionGroup('recipes')//.doc("JmkCUd36eX1cuT1a6BoT")
-      //.where("name", "==", "test 1")
-      //.orderBy("name")
-      .get().then((doc) => {
-        console.log(doc.data())
-        //setState(doc.data());
-      }) */
-
-      firebase.firestore().collection('recipes')
-        .get()
-        .then(snap => {
-          let res = [];
-          snap.forEach(doc => {
-            if ( doc.data().values.name.includes("test") ) {
-              res.push(doc.data().values.name)
-            }
-            //console.log(doc.data());
-            
-          });
-          console.log(res)
-        });
-
-
-
-      /* let citiesRef = firebase.firestore().collection('recipes');
-      //let query = 
-      citiesRef//.where('values', '==', "test")
-      .get()
-        .then(snapshot => {
-          if (snapshot.empty) {
-            console.log('No matching documents.');
-            return;
-          }
-          snapshot.forEach(doc => {
-            console.log(doc.id, '=>', doc.data());
-          });
-        })
-        .catch(err => {
-          console.log('Error getting documents', err);
-        }); */
-
-    //}, []);
-
-  //console.log(state)
-
-
-  /* db.collection("cities").where("capital", "==", true)
+  //const [ref] = firebase.firestore().collection('recipes');
+  const [data, setData] = React.useState({});
+  /* const [data] = React.useState(
+    firebase.firestore().collection('recipes')
     .get()
-    .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-        });
-    })
-    .catch(function(error) {
-        console.log("Error getting documents: ", error);
-    }); */
+    .then(snap => { snap.forEach(doc => { doc.data() })})
+  ) */
 
+  /* firebase.firestore().collection('recipes')
+    .get()
+    .then(snap => { snap.forEach(doc => {
+      //console.log(doc.data())
+      setData(doc.data())
+    }) }); */
+
+  React.useEffect(() => {
+    firebase.firestore().collection('recipes')
+    .get().then(snap => { 
+      snap.forEach(doc => { 
+        //doc.data()
+        setData(doc.data())
+      }
+    )})
+  }, [])
+
+  /* React.useEffect(() => {
+    //ref
+    const recipes = [];
+    firebase.firestore().collection('recipes')
+      .get()
+      .then(snap => {
+        snap.forEach(doc => {
+          const { name, description, brewer } = doc.data().values;
+          recipes.push({
+            key: doc.id,
+            doc, // DocumentSnapshot
+            name,
+            description,
+            brewer
+          });
+        });
+      })
+    setData({
+      recipes
+    });
+  }, []); */
+
+  const columns = ["name", "description", "brewer"];
+
+  const options = {
+    filterType: 'checkbox',
+  };
+
+  console.log(data)
   return (<>
-    
+    {data ? 
+      <MUIDataTable
+        title={"Employee List"}
+        data={data}
+        columns={columns}
+        options={options}
+      />
+    : console.log("rien")}    
   </>);
 
 }

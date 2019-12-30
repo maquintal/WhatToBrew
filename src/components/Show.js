@@ -54,7 +54,8 @@ const getInitialValues = (props) => {
         }],
         hops: [{
           name: "",
-          quantity: ""
+          quantity: "",
+          subHops: [],
         }],
         yeasts: [{
           name: '',
@@ -80,29 +81,37 @@ const Show = (props) => {
 
   const [id] = React.useState(props.match.params ? props.match.params.id : null);
   const classes = useStyles();
-  // const { /* hops, */ malts } = props.location.params.state;
 
   const [state, setState] = React.useState(getInitialValues(props));
   const [ref] = React.useState(firebase.firestore().collection('recipes'))
   const [refIngredients] = React.useState(firebase.firestore().collection('ingredients').doc("7m5HiRkAt6OCJwt7EeoA"))
   const [updateRef] = React.useState(id ? firebase.firestore().collection('recipes').doc(id) : null);
   //const [checked, setChecked] = React.useState(false);
-  /* const [ingredients, setIngredients] = React.useState({
-    malts: [],
-    hops: []
-  }) */
   const [malts, setMalts] = React.useState([])
+  const [hops, setHops] = React.useState([])
 
-  /* const handleChange = () => {
-    setChecked(prev => !prev);
-  }; */
-
-  const func = (props) => { 
+  const getSubMalts = (props) => { 
     refIngredients
     .get().then((doc2) => {
       doc2.data().malts.map((malt) => {
         if ( malt.name ===  props.name ) {
           props.subMalts = malt.sub
+        } else {
+          return ""
+        }
+        return (
+          ""
+        )
+      })
+    })
+  };
+
+  const getSubHops = (props) => { 
+    refIngredients
+    .get().then((doc2) => {
+      doc2.data().hops.map((hop) => {
+        if ( hop.name ===  props.name ) {
+          props.subHops = hop.sub
         } else {
           return ""
         }
@@ -125,6 +134,13 @@ const Show = (props) => {
     refIngredients
     .get().then((doc2) => {
       setMalts(doc2.data().malts)
+    })
+  }, [refIngredients])
+
+  React.useEffect(() => {
+    refIngredients
+    .get().then((doc2) => {
+      setHops(doc2.data().hops)
     })
   }, [refIngredients])
 
@@ -348,7 +364,7 @@ const Show = (props) => {
                                               })}
                                               {/* <MenuItem value={"malt"}>{"malt"}</MenuItem> */}
                                             </Select>
-                                            {func(form.values.malts[index])}
+                                            {getSubMalts(form.values.malts[index])}
                                           </FormControl>
                                         )}
                                       />
@@ -446,13 +462,19 @@ const Show = (props) => {
                                               className={classes.select}
                                               fullWidth                       
                                             >
-                                              {/* hops.map((hop) => {
+                                              {console.log(hops)}
+                                              {hops.map((hop) => {
                                                 return (
-                                                  <MenuItem value={hop}>{hop}</MenuItem>
+                                                  <MenuItem 
+                                                    value={hop.name}
+                                                  >
+                                                    {hop.name}
+                                                  </MenuItem>
                                                 );
-                                              }) */}
-                                              <MenuItem value={"hop"}>{"hop"}</MenuItem>
+                                              })}
+                                              {/* <MenuItem value={"malt"}>{"malt"}</MenuItem> */}
                                             </Select>
+                                            { getSubHops(form.values.hops[index]) }
                                           </FormControl>
                                         )}
                                       />

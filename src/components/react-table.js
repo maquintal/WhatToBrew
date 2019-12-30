@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import firebase from '../Firebase';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 
-//import Button from "@material-ui/core/Button";
+import MUIDataTable from "mui-datatables";
+
+import Button from "@material-ui/core/Button"
 
 class ReactTableCompo extends Component {
   constructor(props) {
@@ -13,8 +13,8 @@ class ReactTableCompo extends Component {
     this.unsubscribe = null;
     this.state = {
       recipes: [],
-      malts: [],
-      hops: [],
+      //malts: [],
+      //hops: [],
     };
   }
 
@@ -35,7 +35,7 @@ class ReactTableCompo extends Component {
    });
   }
 
-  onCollectionUpdateMalts = (querySnapshot) => {
+  /* onCollectionUpdateMalts = (querySnapshot) => {
     querySnapshot.forEach((doc) => {
       const { malts, hops } = doc.data();
       this.setState({
@@ -43,26 +43,79 @@ class ReactTableCompo extends Component {
         hops: hops
       });
     })
-  };
+  }; */
 
   componentDidMount() {
     this.unsubscribe = this.refRecipes.onSnapshot(this.onCollectionUpdateRecipes);
-    this.unsubscribe = this.refIngredients.onSnapshot(this.onCollectionUpdateMalts);
+    //this.unsubscribe = this.refIngredients.onSnapshot(this.onCollectionUpdateMalts);
   }
 
   render() {
-    console.log(this.state)
+
+    const columns = [
+      {
+        name: "key",
+        label: "Key",
+        options: {
+         filter: true,
+         sort: true,
+         display: false,
+        }
+       },
+      {
+       name: "name",
+       label: "Name",
+       options: {
+        filter: true,
+        sort: true,
+       }
+      },
+      {
+       name: "description",
+       label: "Description",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+       name: "brewer",
+       label: "Brewer",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+    ];
+
+    const options = {
+      onRowClick: (rowData, rowMeta) => {
+        //console.log("----RowClick");
+        //console.log("rowData: ", rowData);
+        //console.log("rowMeta: ", rowMeta);
+        this.props.history.push({
+          pathname: `/show/${rowData[0]}`
+        })
+      },
+      selectableRows: false
+    };
    
-    const columns = [{
-      Header: 'Name',
-      accessor: 'name' // String-based value accessors!
-    }]
-   
-    return (<ReactTable
-      data={this.state.recipes}
-      columns={columns}
-      filterable={true}
-    />)
+    return (<>
+      <Button
+        onClick={() => this.props.history.push({
+          pathname: "/create",
+          //params: {state: this.state}
+        })}
+      >
+        Add Recipe
+      </Button>
+      <MUIDataTable
+        title={"Brewing Recipes"}
+        data={this.state.recipes}
+        columns={columns}
+        options={options}
+      />
+    </>)
   }
 }
 

@@ -5,10 +5,13 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+// COMPONENTS //
 import Show from './components/Show';
 import SimpleSnackbar from "./components/snackbar";
 import TestGet from "./components/TestGet";
 import ReactTableCompo from "./components/react-table";
+import AddMalts from "./components/management/addMalts";
 
 ReactDOM.render(
   <Router>
@@ -22,6 +25,7 @@ ReactDOM.render(
         <Route path='/snackbar' component={SimpleSnackbar} />
         <Route path='/test' component={TestGet} />
         <Route path='/react-table' component={ReactTableCompo} />
+        <Route path='/addMalts' component={AddMalts} />
       </div>
   </Router>,
   document.getElementById('root')

@@ -1,11 +1,7 @@
 // MODULES //
 import React from 'react';
 import { Formik, FieldArray, Field } from 'formik';
-//import { FormikConsumer } from 'formik';
 import firebase from '../Firebase';
-//import { Link } from 'react-router-dom';
-
-// MATERIAL //
 
 // INPUTS //
 import TextField from '@material-ui/core/TextField';
@@ -17,32 +13,21 @@ import { Typography } from '@material-ui/core';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-//import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-//import  Divider from "@material-ui/core/Divider";
 
 // ICONS //
-//import AddCircle from '@material-ui/icons/AddCircle';
 import Add from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-//import RemoveCircle from '@material-ui/icons/RemoveCircle';
-//import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 // CUSTOM //
 import useStyles from '../css';
 
 const Create = (props) => {
-  //console.log(props)
   const classes = useStyles();
-  //const { hops, malts } = props.location.params.state;
   const { id } = props.match.params;
-
-  //const ref = firebase.firestore().collection('recipes');
-
   const [state, setState] = React.useState({});
-  //const initialValues = React.useState({});
 
   React.useEffect(() => {
     if ( id ) {
@@ -57,50 +42,7 @@ const Create = (props) => {
       {...props}
       enableReinitialize={true}
       initialValues={state.values}
-      /* initialValues={{
-        name: '',
-        style: '',
-        brewer: '',
-        version: '',
-        description: '',
-        malts: [{
-          name: '',
-          quantity: '',
-        }],
-        waters: [{
-          step: '',
-          quantity: '',
-          temperature: '',
-          duration: '',
-        }],
-        hops: [{
-          name: "",
-          quantity: ""
-        }],
-        yeasts: [{
-          name: '',
-          quantity: '',
-        }],
-        miscs: [{
-          name: '',
-          quantity: '',
-        }],
-        IBU: '',
-        SRM: '',
-        est_ABV: '',
-      }} */
-      /*validate={values => {
-        let errors = {};
-        if (!values.email) {
-          errors.email = 'Required';
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = 'Invalid email address';
-        }
-        return errors;
-      }}*/
-      onSubmit={(values, form) => {
+      /* onSubmit={(values, form) => {
 
         console.log(form)
         /* ref.add({
@@ -112,9 +54,8 @@ const Create = (props) => {
           console.error("Error adding document: ", error);
         });
 
-        form.setSubmitting(false); */
-
-      }}    
+        form.setSubmitting(false);
+      }} */
     
     render={form => (
       
@@ -178,22 +119,6 @@ const Create = (props) => {
                               onChange={form.handleChange}
                               margin="normal"
                             />
-                            /* <FormControl className={classes.formControl}>
-                              <InputLabel 
-                                htmlFor="age-simple"
-                                className={classes.select}
-                              >
-                                Age
-                              </InputLabel>
-                              <Select
-                                {...field}
-                                className={classes.select}                        
-                              >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                              </Select>
-                          </FormControl> */
                           )}
                         />
                         {/* errors.email && touched.email && errors.email */}

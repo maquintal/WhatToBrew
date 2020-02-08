@@ -10,7 +10,8 @@ import * as serviceWorker from './serviceWorker';
 import Show from './components/Show';
 import SimpleSnackbar from "./components/snackbar";
 import TestGet from "./components/TestGet";
-import ReactTableCompo from "./components/react-table";
+// import ReactTableCompo from "./components/react-table";
+import ReactTable from "./components/react-table";
 import AddMalts from "./components/management/addMalts";
 
 ReactDOM.render(
@@ -24,7 +25,7 @@ ReactDOM.render(
         <Route path='/show/:id' component={Show} />
         <Route path='/snackbar' component={SimpleSnackbar} />
         <Route path='/test' component={TestGet} />
-        <Route path='/react-table' component={ReactTableCompo} />
+        <Route path='/react-table' component={ReactTable} />
         <Route path='/addMalts' component={AddMalts} />
       </div>
   </Router>,

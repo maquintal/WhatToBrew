@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import firebase from './Firebase';
+import firebase from '../Firebase';
 
 import MUIDataTable from "mui-datatables";
 
-import Button from "@material-ui/core/Button";
-// import Chip from "@material-ui/core/Chip";
+import Button from "@material-ui/core/Button"
 
-class App extends Component {
+class ReactTableCompo extends Component {
   constructor(props) {
     super(props);
     this.refRecipes = firebase.firestore().collection('recipes');
@@ -88,30 +87,6 @@ class App extends Component {
         sort: false,
        }
       },
-      {
-        name: "malts",
-        label: "Malts",
-        options: {
-          filter: true,
-          // filterType: 'multiselect',
-          sort: false,
-          customBodyRender: (value) => {
-            console.log(value)
-            return value.map( (val) => {
-              const {name} = val
-              return name
-            })
-            //const { name } = value;
-            //if (value !== undefined) {
-              
-              //console.log(name)
-              //return value.map( (val) => {
-              //  return val.name
-              //});
-            //}
-          }
-        }
-      },
     ];
 
     const options = {
@@ -145,4 +120,4 @@ class App extends Component {
   }
 }
 
-  export default App;
+  export default ReactTableCompo;

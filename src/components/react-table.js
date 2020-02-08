@@ -1,122 +1,133 @@
-import React, { Component } from 'react';
-import firebase from '../Firebase';
+import React from 'react'
+import styled from 'styled-components'
+import useTable from 'react-table'
 
-import MUIDataTable from "mui-datatables";
+import makeData from './makeData';
 
-import Button from "@material-ui/core/Button"
+const Styles = styled.div`
+  padding: 1rem;
 
-class ReactTableCompo extends Component {
-  constructor(props) {
-    super(props);
-    this.refRecipes = firebase.firestore().collection('recipes');
-    this.refIngredients = firebase.firestore().collection('ingredients');
-    this.unsubscribe = null;
-    this.state = {
-      recipes: [],
-      //malts: [],
-      //hops: [],
-    };
-  }
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
 
-  onCollectionUpdateRecipes = (querySnapshot) => {
-    const recipes = [];
-    querySnapshot.forEach((doc) => {
-      const { name, description, brewer } = doc.data().values;
-      recipes.push({
-        key: doc.id,
-        doc, // DocumentSnapshot
-        name,
-        description,
-        brewer
-      });
-    });
-    this.setState({
-      recipes
-   });
-  }
-
-  /* onCollectionUpdateMalts = (querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const { malts, hops } = doc.data();
-      this.setState({
-        malts: malts,
-        hops: hops
-      });
-    })
-  }; */
-
-  componentDidMount() {
-    this.unsubscribe = this.refRecipes.onSnapshot(this.onCollectionUpdateRecipes);
-    //this.unsubscribe = this.refIngredients.onSnapshot(this.onCollectionUpdateMalts);
-  }
-
-  render() {
-
-    const columns = [
-      {
-        name: "key",
-        label: "Key",
-        options: {
-         filter: true,
-         sort: true,
-         display: false,
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
         }
-       },
-      {
-       name: "name",
-       label: "Name",
-       options: {
-        filter: true,
-        sort: true,
-       }
-      },
-      {
-       name: "description",
-       label: "Description",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "brewer",
-       label: "Brewer",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-    ];
+      }
+    }
 
-    const options = {
-      onRowClick: (rowData, rowMeta) => {
-        //console.log("----RowClick");
-        //console.log("rowData: ", rowData);
-        //console.log("rowMeta: ", rowMeta);
-        this.props.history.push({
-          pathname: `/show/${rowData[0]}`
-        })
-      },
-      selectableRows: false
-    };
-   
-    return (<>
-      <Button
-        onClick={() => this.props.history.push({
-          pathname: "/create",
-          //params: {state: this.state}
-        })}
-      >
-        Add Recipe
-      </Button>
-      <MUIDataTable
-        title={"Brewing Recipes"}
-        data={this.state.recipes}
-        columns={columns}
-        options={options}
-      />
-    </>)
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+
+      :last-child {
+        border-right: 0;
+      }
+    }
   }
+`
+
+// function Table({ columns, data }) {
+  const Table = ({columns, data}) => {
+  // Use the state and functions returned from useTable to build your UI
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
+    columns,
+    data,
+  })
+
+  // Render the UI for your table
+  return (
+    <table {...getTableProps()}>
+      <thead>
+        {headerGroups.map(headerGroup => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map(column => (
+              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map(
+          (row, i) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map(cell => {
+                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                })}
+              </tr>
+            )}
+        )}
+      </tbody>
+    </table>
+  )
 }
 
-  export default ReactTableCompo;
+// function App() {
+  const ReactTable = () => {
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Name',
+        columns: [
+          {
+            Header: 'First Name',
+            accessor: 'firstName',
+          },
+          {
+            Header: 'Last Name',
+            accessor: 'lastName',
+          },
+        ],
+      },
+      {
+        Header: 'Info',
+        columns: [
+          {
+            Header: 'Age',
+            accessor: 'age',
+          },
+          {
+            Header: 'Visits',
+            accessor: 'visits',
+          },
+          {
+            Header: 'Status',
+            accessor: 'status',
+          },
+          {
+            Header: 'Profile Progress',
+            accessor: 'progress',
+          },
+        ],
+      },
+    ],
+    []
+  )
+
+  const data = React.useMemo(() => makeData(20), [])
+
+  console.log(data)
+
+  return (
+    <Styles>
+      <Table columns={columns} data={data} />
+    </Styles>
+  )
+}
+
+export default ReactTable;
+
